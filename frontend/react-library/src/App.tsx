@@ -1,11 +1,10 @@
 import React from 'react';
 import './App.css';
+import {Navbar} from "./layout/NavbarAndFooter/Navbar";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Wellcome to fullstack</h1>
-    </div>
+      <Navbar/>
   );
 }
 
