@@ -1,10 +1,16 @@
 import React from 'react';
 import './App.css';
 import {Navbar} from "./layout/NavbarAndFooter/Navbar";
+import {ExploreTopBooks} from "./layout/HomePage/ExploreTopBooks";
+import {Carousel} from "./layout/HomePage/Carousel";
 
 function App() {
   return (
-      <Navbar/>
+      <div>
+          <Navbar/>
+          <ExploreTopBooks/>
+          <Carousel/>
+      </div>
   );
 }
 
