@@ -5,6 +5,7 @@ import {Footer} from "./layout/NavbarAndFooter/Footer";
 import {HomePage} from "./layout/HomePage/HomePage";
 import {SearchBooksPage} from "./layout/SearchBookPage/SearchBooksPage";
 import {Redirect, Route, Switch} from "react-router-dom";
+import {BookCheckoutPage} from "./layout/BookCheckoutPage/BookCheckoutPage";
 
 //react is SPA (single page application)
 
@@ -22,6 +23,9 @@ export const  App = () => {
                   </Route>
                   <Route path='/search' >
                       <SearchBooksPage/>
+                  </Route>
+                  <Route path='/checkout/:bookId'>
+                      <BookCheckoutPage/>
                   </Route>
               </Switch>
           </div>
