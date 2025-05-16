@@ -2,6 +2,7 @@ package com.dishoo.library_project.controller;
 
 import com.dishoo.library_project.entity.Book;
 import com.dishoo.library_project.service.BookService;
+import com.dishoo.library_project.utils.JWTExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,20 +15,20 @@ public class BookController {
     private BookService bookService;
 
     @PutMapping("/secure/checkout")
-    public Book checkoutBook (@RequestParam Long bookId) throws Exception {
-        var userEmail = "testuser@mail.com";
+    public Book checkoutBook (@RequestHeader(value = "Authorization") String token, @RequestParam Long bookId) throws Exception {
+        var userEmail = JWTExtractor.payloadJWTExtractor(token, "\"sub\"");
         return bookService.checkoutBook(userEmail, bookId);
     }
 
     @GetMapping("/secure/currentloans/count")
-    public int currentLoansCount() {
-        var userEmail = "testuser@mail.com";
+    public int currentLoansCount(@RequestHeader(value = "Authorization") String token) {
+        var userEmail = JWTExtractor.payloadJWTExtractor(token, "\"sub\"");
         return bookService.currentLoansCount(userEmail);
     }
 
     @GetMapping("/secure/ischeckedout/byuser")
-    public boolean checkoutBookByUser(@RequestParam Long bookId) {
-        var userEmail = "testuser@mail.com";
+    public boolean checkoutBookByUser(@RequestHeader(value = "Authorization") String token, @RequestParam Long bookId) {
+        var userEmail = JWTExtractor.payloadJWTExtractor(token, "\"sub\"");
         return bookService.checkoutBookByUser(userEmail, bookId);
     }
 
