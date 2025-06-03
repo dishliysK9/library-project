@@ -6,6 +6,7 @@ import {CheckoutAndReviewBox} from "./CheckoutAndReviewBox";
 import {ReviewModel} from "../../models/ReviewModel";
 import {LatestReviews} from "./LatestReviews";
 import {useOktaAuth} from "@okta/okta-react";
+import ReviewRequestModel from "../../models/ReviewRequestModel";
 
 export const BookCheckoutPage = () => {
 
@@ -18,7 +19,7 @@ export const BookCheckoutPage = () => {
     // review state
     const [reviews, setReviews] = useState<ReviewModel[]>([]);
     const [totalStars, setTotalStars] = useState(0);
-    const [isLoadingReviews, setIsLoadingReviews] = useState(true);
+    const [isLoadingReview, setIsLoadingReview] = useState(true);
 
     const [isReviewLeft, setIsReviewLeft] = useState(false);
     const [isLoadingUserReview, setIsLoadingUserReview] = useState(true);
@@ -30,9 +31,6 @@ export const BookCheckoutPage = () => {
     // is book checked out
     const [isCheckedOut, setIsCheckedOut] = useState(false);
     const [isLoadingBookCheckedOut, setIsLoadingBookCheckedOut] = useState(true);
-
-
-
 
     const bookId = (window.location.pathname).split('/')[2];
 
@@ -86,34 +84,58 @@ export const BookCheckoutPage = () => {
 
             let weightedStarReviews: number = 0;
 
-            for (const key in responseData){
+            for (const key in responseData) {
                 loadedReviews.push({
                     id: responseData[key].id,
                     userEmail: responseData[key].userEmail,
                     date: responseData[key].date,
                     rating: responseData[key].rating,
                     book_id: responseData[key].bookId,
-                    reviewDescription: responseData[key].reviewDescription
+                    reviewDescription: responseData[key].reviewDescription,
                 });
-
-                weightedStarReviews += responseData[key].rating;
+                weightedStarReviews = weightedStarReviews + responseData[key].rating;
             }
 
             if (loadedReviews) {
-                const round = (Math.round(weightedStarReviews / loadedReviews.length * 2) / 2).toFixed(1);
+                const round = (Math.round((weightedStarReviews / loadedReviews.length) * 2) / 2).toFixed(1);
                 setTotalStars(Number(round));
             }
 
             setReviews(loadedReviews);
-            setIsLoadingReviews(false);
-
+            setIsLoadingReview(false);
         };
 
         fetchBookReviews().catch((error: any) => {
-            setIsLoadingReviews(false);
+            setIsLoadingReview(false);
             setHttpError(error.message);
         })
     }, [isReviewLeft]);
+
+    useEffect(() => {
+        const fetchUserReviewBook = async () => {
+            if (authState && authState.isAuthenticated) {
+                const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
+                const requestOptions = {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${authState.accessToken?.accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                };
+                const userReview = await fetch(url, requestOptions);
+                if (!userReview.ok) {
+                    throw new Error('Something went wrong');
+                }
+                const userReviewResponseJson = await userReview.json();
+                setIsReviewLeft(userReviewResponseJson);
+            }
+            setIsLoadingUserReview(false);
+        }
+        fetchUserReviewBook().catch((error: any) => {
+            setIsLoadingUserReview(false);
+            setHttpError(error.message);
+        })
+    }, [authState]);
 
     useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
@@ -169,8 +191,7 @@ export const BookCheckoutPage = () => {
         })
     }, [authState]);
 
-
-    if (isLoading || isLoadingReviews || isLoadingCurrentLoansCount || isLoadingBookCheckedOut || isLoadingUserReview) {
+    if (isLoading || isLoadingReview || isLoadingCurrentLoansCount || isLoadingBookCheckedOut || isLoadingUserReview) {
         return (
             <SpinnerLoading />
         )
@@ -232,7 +253,7 @@ export const BookCheckoutPage = () => {
                             <img src={book?.img} width='226' height='349' alt='Book' />
                             :
                             <img src={require('./../../Images/BooksImages/book-luv2code-1000.png')} width='226'
-                                height='349' alt='Book' />
+                                 height='349' alt='Book' />
                         }
                     </div>
                     <div className='col-4 col-md-4 container'>
@@ -240,7 +261,7 @@ export const BookCheckoutPage = () => {
                             <h2>{book?.title}</h2>
                             <h5 className='text-primary'>{book?.author}</h5>
                             <p className='lead'>{book?.description}</p>
-                            <StarsReview rating={totalStars} size={32}/>
+                            <StarsReview rating={totalStars} size={32} />
                         </div>
                     </div>
                     <CheckoutAndReviewBox book={book} mobile={false} currentLoansCount={currentLoansCount}
@@ -248,15 +269,15 @@ export const BookCheckoutPage = () => {
                                           checkoutBook={checkoutBook} isReviewLeft={isReviewLeft} submitReview={submitReview}/>
                 </div>
                 <hr />
-                <LatestReviews reviews={reviews} bookId={book?.id} mobile={false}/>
+                <LatestReviews reviews={reviews} bookId={book?.id} mobile={false} />
             </div>
             <div className='container d-lg-none mt-5'>
-                <div className='d-flex justify-content-center align-items-center'>
+                <div className='d-flex justify-content-center alighn-items-center'>
                     {book?.img ?
                         <img src={book?.img} width='226' height='349' alt='Book' />
                         :
                         <img src={require('./../../Images/BooksImages/book-luv2code-1000.png')} width='226'
-                            height='349' alt='Book' />
+                             height='349' alt='Book' />
                     }
                 </div>
                 <div className='mt-4'>
@@ -264,14 +285,14 @@ export const BookCheckoutPage = () => {
                         <h2>{book?.title}</h2>
                         <h5 className='text-primary'>{book?.author}</h5>
                         <p className='lead'>{book?.description}</p>
-                        <StarsReview rating={totalStars} size={32}/>
+                        <StarsReview rating={totalStars} size={32} />
                     </div>
                 </div>
                 <CheckoutAndReviewBox book={book} mobile={true} currentLoansCount={currentLoansCount}
                                       isAuthenticated={authState?.isAuthenticated} isCheckedOut={isCheckedOut}
                                       checkoutBook={checkoutBook} isReviewLeft={isReviewLeft} submitReview={submitReview}/>
                 <hr />
-                <LatestReviews reviews={reviews} bookId={book?.id} mobile={true}/>
+                <LatestReviews reviews={reviews} bookId={book?.id} mobile={true} />
             </div>
         </div>
     );
