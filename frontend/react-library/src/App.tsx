@@ -8,9 +8,10 @@ import {Redirect, Route, Switch, useHistory} from "react-router-dom";
 import {BookCheckoutPage} from "./layout/BookCheckoutPage/BookCheckoutPage";
 import {oktaConfig} from "./lib/oktaConfig";
 import {OktaAuth, toRelativeUrl} from "@okta/okta-auth-js";
-import {LoginCallback, Security} from "@okta/okta-react";
+import {LoginCallback, SecureRoute, Security} from "@okta/okta-react";
 import LoginWidget from "./Auth/LoginWidget";
 import {ReviewListPage} from "./layout/BookCheckoutPage/ReviewListPage/ReviewListPage";
+import {ShelfPage} from "./layout/ShelfPage/ShelfPage";
 
 //react is SPA (single page application)
 
@@ -55,6 +56,7 @@ export const  App = () => {
                   }
                   />
                   <Route path='/login/callback' component={LoginCallback} />
+                  <SecureRoute path='/shelf'> <ShelfPage/> </SecureRoute>
               </Switch>
           </div>
           <Footer/>
