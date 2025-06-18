@@ -1,6 +1,7 @@
 package com.dishoo.library_project.controller;
 
 import com.dishoo.library_project.entity.Message;
+import com.dishoo.library_project.requestmodels.AdminQuestionRequest;
 import com.dishoo.library_project.service.MessagesService;
 import com.dishoo.library_project.utils.JWTExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class MessagesController {
         messagesService.postMessage(messageRequest, userEmail);
     }
 
-    /*@PutMapping("/secure/admin/message")
+    @PutMapping("/secure/admin/message")
     public void putMessage(@RequestHeader(value="Authorization") String token,
                            @RequestBody AdminQuestionRequest adminQuestionRequest) throws Exception {
         String userEmail = JWTExtractor.payloadJWTExtractor(token, "\"sub\"");
@@ -34,6 +35,6 @@ public class MessagesController {
             throw new Exception("Administration page only.");
         }
         messagesService.putMessage(adminQuestionRequest, userEmail);
-    }*/
+    }
 
 }

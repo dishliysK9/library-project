@@ -12,6 +12,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     Page<Message> findByUserEmail(@RequestParam("user_email") String userEmail, Pageable pageable);
 
+    // for admins: idea is to see only not answered messages
     Page<Message> findByClosed(@RequestParam("closed") boolean closed, Pageable pageable);
 
 }

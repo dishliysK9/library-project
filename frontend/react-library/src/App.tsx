@@ -13,6 +13,7 @@ import LoginWidget from "./Auth/LoginWidget";
 import {ReviewListPage} from "./layout/BookCheckoutPage/ReviewListPage/ReviewListPage";
 import {ShelfPage} from "./layout/ShelfPage/ShelfPage";
 import {MessagesPage} from "./layout/MessagesPage/MessagesPage";
+import {ManageLibraryPage} from "./layout/ManageLibraryPage/ManageLibraryPage";
 
 //react is SPA (single page application)
 
@@ -59,6 +60,7 @@ export const  App = () => {
                   <Route path='/login/callback' component={LoginCallback} />
                   <SecureRoute path='/shelf'> <ShelfPage/> </SecureRoute>
                   <SecureRoute path='/messages'> <MessagesPage/> </SecureRoute>
+                  <SecureRoute path='/admin'> <ManageLibraryPage/> </SecureRoute>
               </Switch>
           </div>
           <Footer/>
