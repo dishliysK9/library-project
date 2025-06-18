@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {useOktaAuth} from "@okta/okta-react";
+import AddBookRequest from "../../../models/AddBookRequest";
 
 export const AddNewBook = () => {
 
