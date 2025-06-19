@@ -1,8 +1,9 @@
-import {useOktaAuth} from "@okta/okta-react";
-import React, {useEffect, useState} from "react";
 import {BookModel} from "../../../models/BookModel";
+import {useOktaAuth} from "@okta/okta-react";
+import {JSX, useEffect, useState} from "react";
 
-export const ChangeQuantityOfBook: React.FC<{ book: BookModel, deleteBook: any }> = (props, key) => {
+//not sure if should be reverted
+export const ChangeQuantityOfBook: (props: any, key: any) => JSX.Element = (props, key) => {
 
     const { authState } = useOktaAuth();
     const [quantity, setQuantity] = useState<number>(0);

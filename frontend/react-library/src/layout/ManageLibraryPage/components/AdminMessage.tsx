@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import MessageModel from "../../../models/MessageModel";
 
-export const AdminMessage: React.FC<{ message: MessageModel,
-    submitResponseToQuestion: any }> = (props, key) => {
+//not sure if should be reverted
+export const AdminMessage: (props: any, key: any) => React.JSX.Element = (props, key) => {
 
     const [displayWarning, setDisplayWarning] = useState(false);
     const [response, setResponse] = useState('');
