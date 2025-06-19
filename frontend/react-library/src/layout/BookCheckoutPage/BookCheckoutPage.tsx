@@ -16,19 +16,19 @@ export const BookCheckoutPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [httpError, setHttpError] = useState(null);
 
-    // review state
-    const [reviews, setReviews] = useState<ReviewModel[]>([]);
+    // Review State
+    const [reviews, setReviews] = useState<ReviewModel[]>([])
     const [totalStars, setTotalStars] = useState(0);
     const [isLoadingReview, setIsLoadingReview] = useState(true);
 
     const [isReviewLeft, setIsReviewLeft] = useState(false);
     const [isLoadingUserReview, setIsLoadingUserReview] = useState(true);
 
-    // loans count state
+    // Loans Count State
     const [currentLoansCount, setCurrentLoansCount] = useState(0);
     const [isLoadingCurrentLoansCount, setIsLoadingCurrentLoansCount] = useState(true);
 
-    // is book checked out
+    // Is Book Check Out?
     const [isCheckedOut, setIsCheckedOut] = useState(false);
     const [isLoadingBookCheckedOut, setIsLoadingBookCheckedOut] = useState(true);
 
@@ -166,7 +166,7 @@ export const BookCheckoutPage = () => {
     useEffect(() => {
         const fetchUserCheckedOutBook = async () => {
             if (authState && authState.isAuthenticated) {
-                const url = `http://localhost:8080/api/books/secure/ischeckedout/byuser/?bookId=${bookId}`;
+                const url = `http://localhost:8080/api/books/secure/ischeckedout/byuser?bookId=${bookId}`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {

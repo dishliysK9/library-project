@@ -10,6 +10,7 @@
 	</parent>
 	<groupId>com.dishoo</groupId>
 	<artifactId>library-project</artifactId>
+	<!--chaange version-->
 	<version>0.0.1-SNAPSHOT</version>
 	<name>library-project</name>
 	<description>Spring Boot Application for React</description>
