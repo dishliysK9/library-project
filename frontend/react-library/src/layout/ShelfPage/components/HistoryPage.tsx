@@ -34,8 +34,8 @@ export const HistoryPage = () => {
                 }
                 const historyResponseJson = await historyResponse.json();
 
-                setHistories(historyResponseJson._embedded.histories);
-                setTotalPages(historyResponseJson.page.totalPages);
+                setHistories(historyResponseJson.content);
+                setTotalPages(historyResponseJson.totalPages);
             }
             setIsLoadingHistory(false);
 

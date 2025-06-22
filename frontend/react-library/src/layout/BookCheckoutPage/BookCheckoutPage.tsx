@@ -76,9 +76,7 @@ export const BookCheckoutPage = () => {
                 throw new Error('Something went wrong!');
             }
 
-            const responseJsonReviews = await responseReviews.json();
-
-            const responseData = responseJsonReviews._embedded.reviews;
+            const responseData = await responseReviews.json();
 
             const loadedReviews: ReviewModel[] = [];
 

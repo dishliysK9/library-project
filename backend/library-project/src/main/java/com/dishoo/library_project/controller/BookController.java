@@ -30,14 +30,14 @@ public class BookController {
     }
 
     @GetMapping("/secure/currentloans/count")
-    public int currentLoansCount(@RequestHeader(value = "Authorization") String token) {
+    public int currentLoansCount(@RequestHeader(value = "Authorization") String token) throws Exception {
         String userEmail = JWTExtractor.payloadJWTExtractor(token, "\"sub\"");
         return bookService.currentLoansCount(userEmail);
     }
 
     @GetMapping("/secure/ischeckedout/byuser")
     public Boolean checkoutBookByUser(@RequestHeader(value = "Authorization") String token,
-                                      @RequestParam Long bookId) {
+                                      @RequestParam Long bookId) throws Exception {
         String userEmail = JWTExtractor.payloadJWTExtractor(token, "\"sub\"");
         return bookService.checkoutBookByUser(userEmail, bookId);
     }

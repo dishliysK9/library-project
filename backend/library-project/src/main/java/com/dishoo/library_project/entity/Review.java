@@ -16,8 +16,13 @@ public class Review {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "user_email")
-    private String userEmail;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
 
     @Column(name = "date")
     @CreationTimestamp
@@ -25,9 +30,6 @@ public class Review {
 
     @Column(name = "rating")
     private double rating;
-
-    @Column(name = "book_id")
-    private Long bookId;
 
     @Column(name = "review_description")
     private String reviewDescription;

@@ -1,5 +1,6 @@
 package com.dishoo.library_project.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,11 +12,11 @@ public class Checkout {
 
     public Checkout() {}
 
-    public Checkout(String userEmail, String checkoutDate, String returnDate, Long bookId) {
-        this.userEmail = userEmail;
+    public Checkout(Book book, User user, String checkoutDate, String  returnDate) {
+        this.book = book;
+        this.user = user;
         this.checkoutDate = checkoutDate;
         this.returnDate = returnDate;
-        this.bookId = bookId;
     }
 
     @Id
@@ -23,15 +24,17 @@ public class Checkout {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "user_email")
-    private String userEmail;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
 
     @Column(name = "checkout_date")
     private String checkoutDate;
 
     @Column(name = "return_date")
     private String returnDate;
-
-    @Column(name = "book_id")
-    private Long bookId;
 }

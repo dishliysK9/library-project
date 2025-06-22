@@ -1,11 +1,17 @@
 package com.dishoo.library_project.controller;
 
-import com.dishoo.library_project.entity.Review;
 import com.dishoo.library_project.requestmodels.ReviewRequest;
+import com.dishoo.library_project.responsemodels.HistoryResponse;
+import com.dishoo.library_project.responsemodels.ReviewResponse;
 import com.dishoo.library_project.service.ReviewService;
 import com.dishoo.library_project.utils.JWTExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin("http://localhost:3000")
 @RestController
@@ -35,5 +41,13 @@ public class ReviewController {
             throw new Exception("User email is missing");
         }
         reviewService.postReview(userEmail, reviewRequest);
+    }
+
+    @GetMapping("/search/findByBookId")
+    public List<ReviewResponse> getReviewsByBookId(@RequestParam Long bookId) {
+        return reviewService.getReviewsByBookId(bookId)
+                .stream()
+                .map(ReviewResponse::new)
+                .collect(Collectors.toList());
     }
 }

@@ -3,9 +3,11 @@ package com.dishoo.library_project.service;
 import com.dishoo.library_project.dao.BookRepository;
 import com.dishoo.library_project.dao.CheckoutRepository;
 import com.dishoo.library_project.dao.HistoryRepository;
+import com.dishoo.library_project.dao.UserRepository;
 import com.dishoo.library_project.entity.Book;
 import com.dishoo.library_project.entity.Checkout;
 import com.dishoo.library_project.entity.History;
+import com.dishoo.library_project.entity.User;
 import com.dishoo.library_project.responsemodels.ShelfCurrentLoansResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,10 +34,15 @@ public class BookService {
     @Autowired
     private HistoryRepository historyRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
     public Book checkoutBook (String userEmail, Long bookId) throws Exception {
         var book = bookRepository.findById(bookId);
-        var checkoutValidation = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new Exception("User not found"));
+
+        var checkoutValidation = checkoutRepository.findByUserIdAndBookId(user.getId(), bookId);
 
         if (!book.isPresent() || checkoutValidation != null || book.get().getCopiesAvailable() <= 0) {
             throw new Exception("Book not found or already checked out");
@@ -44,37 +51,41 @@ public class BookService {
         book.get().setCopiesAvailable(book.get().getCopiesAvailable() - 1);
         bookRepository.save(book.get());
 
-        var checkout = new Checkout(
-                userEmail,
-                LocalDate.now().toString(),
-                LocalDate.now().plusDays(7).toString(),
-                book.get().getId()
-
-        );
+        var checkout = new Checkout();
+        checkout.setUser(user);
+        checkout.setBook(book.get());
+        checkout.setCheckoutDate(LocalDate.now().toString());
+        checkout.setReturnDate(LocalDate.now().plusDays(7).toString());
 
         checkoutRepository.save(checkout);
 
         return book.get();
     }
 
-    public boolean checkoutBookByUser(String userEmail, Long bookId) {
-        var checkoutValidation = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
+    public boolean checkoutBookByUser(String userEmail, Long bookId) throws Exception {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new Exception("User not found"));
+        var checkoutValidation = checkoutRepository.findByUserIdAndBookId(user.getId(), bookId);
         return checkoutValidation != null;
     }
 
-    public int currentLoansCount(String userEmail) {
-        return checkoutRepository.findBooksByUserEmail(userEmail).size();
+    public int currentLoansCount(String userEmail) throws Exception {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new Exception("User not found"));
+        return checkoutRepository.findBooksByUserId(user.getId()).size();
     }
 
     public List<ShelfCurrentLoansResponse> currentLoans(String userEmail) throws Exception {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new Exception("User not found"));
 
         List<ShelfCurrentLoansResponse> shelfCurrentLoansResponses = new ArrayList<>();
 
-        List<Checkout> checkoutList = checkoutRepository.findBooksByUserEmail(userEmail);
+        var checkoutList = checkoutRepository.findBooksByUserId(user.getId());
         List<Long> bookIdList = new ArrayList<>();
 
         for (Checkout i: checkoutList) {
-            bookIdList.add(i.getBookId());
+            bookIdList.add(i.getBook().getId());
         }
 
         List<Book> books = bookRepository.findBooksByBookIds(bookIdList);
@@ -83,7 +94,7 @@ public class BookService {
 
         for (Book book : books) {
             Optional<Checkout> checkout = checkoutList.stream()
-                    .filter(x -> x.getBookId() == book.getId()).findFirst();
+                    .filter(x -> x.getBook().getId() == book.getId()).findFirst();
 
             if (checkout.isPresent()) {
 
@@ -102,10 +113,12 @@ public class BookService {
     }
 
     public void returnBook (String userEmail, Long bookId) throws Exception {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new Exception("User not found"));
 
         Optional<Book> book = bookRepository.findById(bookId);
 
-        Checkout validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
+        var validateCheckout = checkoutRepository.findByUserIdAndBookId(user.getId(), bookId);
 
         if (!book.isPresent() || validateCheckout == null) {
             throw new Exception("Book does not exist or not checked out by user");
@@ -117,7 +130,7 @@ public class BookService {
         checkoutRepository.deleteById(validateCheckout.getId());
 
         History history = new History(
-                userEmail,
+                user,
                 validateCheckout.getCheckoutDate(),
                 LocalDate.now().toString(),
                 book.get().getTitle(),
@@ -130,8 +143,10 @@ public class BookService {
     }
 
     public void renewLoan(String userEmail, Long bookId) throws Exception {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new Exception("User not found"));
 
-        Checkout validateCheckout = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
+        var validateCheckout = checkoutRepository.findByUserIdAndBookId(user.getId(), bookId);
 
         if (validateCheckout == null) {
             throw new Exception("Book does not exist or not checked out by user");

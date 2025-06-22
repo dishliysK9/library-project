@@ -11,9 +11,9 @@ public class History {
 
     public History(){}
 
-    public History(String userEmail, String checkoutDate, String returnedDate, String title,
+    public History(User user, String checkoutDate, String returnedDate, String title,
                    String author, String description, String img) {
-        this.userEmail = userEmail;
+        this.user = user;
         this.checkoutDate = checkoutDate;
         this.returnedDate = returnedDate;
         this.title = title;
@@ -27,8 +27,9 @@ public class History {
     @Column(name = "id")
     private Long id;
 
-    @Column(name="user_email")
-    private String userEmail;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(name="checkout_date")
     private String checkoutDate;
