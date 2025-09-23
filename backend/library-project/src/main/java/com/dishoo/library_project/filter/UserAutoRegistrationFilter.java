@@ -20,7 +20,7 @@ public class UserAutoRegistrationFilter extends OncePerRequestFilter {
     @Autowired
     private UserRepository userRepository;
 
-    //guarantees user exist (not sure if perfect approach)
+    //guarantees user exist
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,

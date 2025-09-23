@@ -12,10 +12,6 @@ import java.util.List;
 @Repository
 public interface CheckoutRepository extends JpaRepository<Checkout, Long> {
 
-    /*Checkout findByUserEmailAndBookId(String userEmail, Long bookId);
-
-    List<Checkout> findBooksByUserEmail(String userEmail);*/
-
     Checkout findByUserIdAndBookId(Long userId, Long bookId);
 
     List<Checkout> findBooksByUserId(Long userId);
