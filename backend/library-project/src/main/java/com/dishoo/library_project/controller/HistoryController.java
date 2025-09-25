@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("https://library-service-react-961766531040.europe-west1.run.app")
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api/histories")
 public class HistoryController {

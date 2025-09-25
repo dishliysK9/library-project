@@ -6,7 +6,7 @@ import com.dishoo.library_project.utils.JWTExtractor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin("https://library-service-react-961766531040.europe-west1.run.app")
+@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
