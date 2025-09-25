@@ -4,10 +4,10 @@ const prod = {
     },
 };
 
-const dev = {
+/*const dev = {
     url: {
         BASE_URL: 'http://localhost:8080/api/'
     },
-};
+};*/
 
-export const config = process.env.NODE_ENV === 'development' ? dev : prod;
+export const config = prod; /*process.env.NODE_ENV === 'development' ? dev : prod;*/

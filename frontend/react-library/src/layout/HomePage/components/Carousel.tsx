@@ -15,7 +15,7 @@ export const Carousel = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             //const baseUrl: string = 'config.url.BASE_URL + `books';
-            const baseUrl: string = config.url.BASE_URL + 'books';
+            const baseUrl: string = config.url.BASE_URL + `books`;
 
 
             // carousell has 3 swipes with 3 books each swipe, therefore we need 9 in total top books
