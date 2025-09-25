@@ -3,6 +3,7 @@ import { SpinnerLoading } from '../Utils/SpinnerLoading';
 import { SearchBook } from './components/SearchBook';
 import {Pagination} from "../Utils/Pagination";
 import {BookModel} from "../../models/BookModel";
+import {config} from "../../Constants";
 
 export const SearchBooksPage = () => {
 
@@ -19,7 +20,7 @@ export const SearchBooksPage = () => {
 
     useEffect(() => {
         const fetchBooks = async () => {
-            const baseUrl: string = "config.url.BASE_URL + `books";
+            const baseUrl: string = config.url.BASE_URL + `books`;
 
             let url: string = '';
 
