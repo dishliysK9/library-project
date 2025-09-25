@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("https://library-service-react-961766531040.europe-west1.run.app")
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewController {

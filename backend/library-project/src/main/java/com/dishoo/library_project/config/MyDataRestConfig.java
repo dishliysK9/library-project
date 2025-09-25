@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 public class MyDataRestConfig implements RepositoryRestConfigurer {
 
     private String allowedOrigins = "http://localhost:3000";
+    private String allowedOrigins2 = "https://library-service-react-961766531040.europe-west1.run.app";
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration configuration, CorsRegistry cors) {
@@ -27,7 +28,7 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
         disableMethods(Message.class, configuration, unsuportedActions);
 
         cors.addMapping(configuration.getBasePath() + "/**")
-                .allowedOrigins(allowedOrigins);
+                .allowedOrigins(allowedOrigins, allowedOrigins2);
     }
 
     private void disableMethods(Class clazz, RepositoryRestConfiguration config, HttpMethod[] unsuportedActions) {
