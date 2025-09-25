@@ -29,7 +29,7 @@ public class SecurityConfiguration {
                 .jwt();
 
         // cors filters
-        http.cors();
+        http.cors().disable();
 
         //add content negotiation strategy
         http.setSharedObject(ContentNegotiationStrategy.class, new HeaderContentNegotiationStrategy());
