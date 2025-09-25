@@ -3,6 +3,7 @@ import {Pagination} from "../../Utils/Pagination";
 import {useEffect, useState} from "react";
 import {useOktaAuth} from "@okta/okta-react";
 import MessageModel from "../../../models/MessageModel";
+import {config} from "../../../Constants";
 
 export const Messages = () => {
 
@@ -21,7 +22,7 @@ export const Messages = () => {
     useEffect(() => {
         const fetchUserMessages = async () => {
             if (authState && authState?.isAuthenticated) {
-                const url = `http://localhost:8080/api/messages/search/findByUserEmail/?userEmail=${authState?.accessToken?.claims.sub}&page=${currentPage - 1}&size=${messagesPerPage}`;
+                const url = config.url.BASE_URL + `messages/search/findByUserEmail/?userEmail=${authState?.accessToken?.claims.sub}&page=${currentPage - 1}&size=${messagesPerPage}`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {

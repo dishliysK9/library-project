@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {BookModel} from "../../../models/BookModel";
 import {SpinnerLoading} from "../../Utils/SpinnerLoading";
 import {Link} from "react-router-dom";
+import {config} from "../../../Constants";
 
 export const Carousel = () => {
 
@@ -13,7 +14,9 @@ export const Carousel = () => {
     // called when component is created
     useEffect(() => {
         const fetchBooks = async () => {
-            const baseUrl: string = 'http://localhost:8080/api/books';
+            //const baseUrl: string = 'config.url.BASE_URL + `books';
+            const baseUrl: string = config.url.BASE_URL + 'books';
+
 
             // carousell has 3 swipes with 3 books each swipe, therefore we need 9 in total top books
             const url: string =`${baseUrl}?page=0&size=9`;

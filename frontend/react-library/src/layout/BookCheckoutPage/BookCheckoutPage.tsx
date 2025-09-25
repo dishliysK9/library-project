@@ -7,6 +7,7 @@ import {ReviewModel} from "../../models/ReviewModel";
 import {LatestReviews} from "./LatestReviews";
 import {useOktaAuth} from "@okta/okta-react";
 import ReviewRequestModel from "../../models/ReviewRequestModel";
+import { config } from "../../Constants";
 
 export const BookCheckoutPage = () => {
 
@@ -36,7 +37,7 @@ export const BookCheckoutPage = () => {
 
     useEffect(() => {
         const fetchBook = async () => {
-            const baseUrl: string = `http://localhost:8080/api/books/${bookId}`;
+            const baseUrl: string = config.url.BASE_URL + `books/${bookId}`;
 
             const response = await fetch(baseUrl);
 
@@ -68,7 +69,7 @@ export const BookCheckoutPage = () => {
 
     useEffect(() => {
         const fetchBookReviews = async () => {
-            const reviewUrl: string = `http://localhost:8080/api/reviews/search/findByBookId?bookId=${bookId}`;
+            const reviewUrl: string = config.url.BASE_URL + `reviews/search/findByBookId?bookId=${bookId}`;
 
             const responseReviews = await fetch(reviewUrl);
 
@@ -112,7 +113,7 @@ export const BookCheckoutPage = () => {
     useEffect(() => {
         const fetchUserReviewBook = async () => {
             if (authState && authState.isAuthenticated) {
-                const url = `http://localhost:8080/api/reviews/secure/user/book/?bookId=${bookId}`;
+                const url = config.url.BASE_URL + `reviews/secure/user/book/?bookId=${bookId}`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {
@@ -138,7 +139,7 @@ export const BookCheckoutPage = () => {
     useEffect(() => {
         const fetchUserCurrentLoansCount = async () => {
             if (authState && authState.isAuthenticated) {
-                const url = `http://localhost:8080/api/books/secure/currentloans/count`;
+                const url = config.url.BASE_URL + 'books/secure/currentloans/count';
                 const requestOptions = {
                     method: 'GET',
                     headers: {
@@ -164,7 +165,7 @@ export const BookCheckoutPage = () => {
     useEffect(() => {
         const fetchUserCheckedOutBook = async () => {
             if (authState && authState.isAuthenticated) {
-                const url = `http://localhost:8080/api/books/secure/ischeckedout/byuser?bookId=${bookId}`;
+                const url = config.url.BASE_URL + `books/secure/ischeckedout/byuser?bookId=${bookId}`;
                 const requestOptions = {
                     method: 'GET',
                     headers: {
@@ -204,7 +205,7 @@ export const BookCheckoutPage = () => {
     }
 
     async function checkoutBook() {
-        const url = `http://localhost:8080/api/books/secure/checkout/?bookId=${book?.id}`;
+        const url = config.url.BASE_URL + `books/secure/checkout/?bookId=${book?.id}`;
         const requestOptions = {
             method: 'PUT',
             headers: {
@@ -226,7 +227,7 @@ export const BookCheckoutPage = () => {
         }
 
         const reviewRequestModel = new ReviewRequestModel(starInput, bookId, reviewDescription);
-        const url = `http://localhost:8080/api/reviews/secure`;
+        const url = config.url.BASE_URL + `reviews/secure`;
         const requestOptions = {
             method: 'POST',
             headers: {

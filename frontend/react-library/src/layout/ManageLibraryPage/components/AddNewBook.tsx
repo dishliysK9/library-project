@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {useOktaAuth} from "@okta/okta-react";
 import AddBookRequest from "../../../models/AddBookRequest";
+import {config} from "../../../Constants";
 
 export const AddNewBook = () => {
 
@@ -40,7 +41,7 @@ export const AddNewBook = () => {
     }
 
     async function submitNewBook() {
-        const url = `http://localhost:8080/api/admin/secure/add/book`;
+        const url = config.url.BASE_URL + `admin/secure/add/book`;
         if (authState?.isAuthenticated && title !== '' && author !== '' && category !== 'Category'
             && description !== '' && copies >= 0) {
             const book: AddBookRequest = new AddBookRequest(title, author, description, copies, category);
