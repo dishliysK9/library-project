@@ -1,6 +1,6 @@
 const prod = {
     url: {
-        BASE_URL: 'https://library-service-961766531040.europe-west1.run.app/api' //backend url in cloud
+        BASE_URL: 'https://library-service-961766531040.europe-west1.run.app/api/' //backend url in cloud
     },
 };
 
